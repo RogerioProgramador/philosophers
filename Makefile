@@ -6,26 +6,32 @@
 #    By: rsiqueir <rsiqueir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/20 13:20:43 by rsiqueir          #+#    #+#              #
-#    Updated: 2022/12/28 21:17:04 by rsiqueir         ###   ########.fr        #
+#    Updated: 2023/02/06 01:13:52 by rsiqueir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo
+NAME = philosophers
 CC = cc -Wall -Werror -Wextra
 CFLAGS = -lreadline
 RM = rm -f
 
-SRCS =	src/main.c	\
-		src/libft.c	\
-		src/validate.c \
-		src/run.c
-
+SRCS =	philo/src/actions.c	\
+		philo/src/action_utils.c	\
+		philo/src/check_params.c \
+		philo/src/main.c	\
+		philo/src/spy.c	\
+		philo/src/start_forks.c \
+		philo/src/start_philosophers.c \
+		philo/src/threads.c	\
+		philo/src/free.c \
+		philo/src/utils.c	
+		
 OBJS = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
 %.o: %.c
-	$(CC) -I./include -c $< -o $@
+	$(CC) -I./philo/include -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC)  $(OBJS) -o $(NAME) $(CFLAGS)

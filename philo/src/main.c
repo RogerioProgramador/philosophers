@@ -6,34 +6,37 @@
 /*   By: rsiqueir <rsiqueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:40:49 by rsiqueir          #+#    #+#             */
-/*   Updated: 2022/12/28 17:55:59 by rsiqueir         ###   ########.fr       */
+/*   Updated: 2023/02/05 23:57:12 by rsiqueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void set_params(t_params *params,int args_number, char **args)
+void	parse(t_data *data, int argc, char **argv)
 {
-	params->number_of_philosophers = string_to_int(args[1]);
-	params->time_to_die = string_to_int(args[2]);
-	params->time_to_eat = string_to_int(args[3]);
-	params->time_to_sleep = string_to_int(args[4]);
-	if (args_number == 6)
-		params->philosopher_must_eat = string_to_int(args[5]);
+	data->time_to_die = ft_atol(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
+	data->number_of_philos = ft_atoi(argv[1]);
+	if (argc == 6)
+		data->number_of_meals = ft_atoi(argv[5]);
 	else
-		params->philosopher_must_eat = -1;
+		data->number_of_meals = MAX_INT;
 }
 
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
-	t_params params;
+	t_data data;
 
-	if (is_valid(argc, argv))
-	{
-		set_params(&params, argc, argv);
-		run(&params);
-	}
-	else
-		print_string("Error: Wrong Usage.\n");
+	if(!check_params(argc,argv))
+		return (-1);
+	parse(&data, argc, argv);
+	start_philosophers(&data);
+	start_forks(&data);
+	create_threads(&data);
+	init_spy(&data);
+	join_threads(&data);
+	free_all(&data);
+	return (0);
 }
